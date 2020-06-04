@@ -1,0 +1,31 @@
+.mood {
+/*  border: solid 1px black;*/
+}
+
+.button {
+  width: 64px;
+  height: 64px;
+  border-radius: 64px;
+  border: none;
+  background: transparent;
+/*  box-shadow: 0 0 0 3px #CE4157;*/
+  font-size: 50px;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  outline: 3px transparent;
+}
+
+.button span {
+  margin-top: 5px;
+}
+
+.button:focus {
+/*  box-shadow: 0 0 0 3px #CE4157;*/
+}
+
+.button[data-isSelected="true"]{
+  box-shadow: 0 0 0 3px #CE4157;
+}

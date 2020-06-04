@@ -1,0 +1,56 @@
+.new {
+  --corners: 3px;
+	padding: 56px 20px;
+	min-height: 100%;
+	width: 100%;
+}
+
+.new > * {
+  margin: 1rem 0;
+}
+
+.moodsgrid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, 64px);
+}
+
+.moodtext {
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: bold;
+}
+
+.note {
+  display: block;
+  width: 100%;
+  font-size: 1.5rem;
+  border: solid 1px #8F8D8D;
+  border-radius: var(--corners);
+}
+
+.note:focus {
+  outline-color: var(--blue);
+}
+
+h2 {
+  font-family: var(--secondFont, 'Arial');
+}
+
+.save {
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  background-color: var(--blue);
+  border: none;
+  box-shadow: var(--shadow);
+  border-radius: var(--corners);
+  color: white;
+  font-weight: bold;
+}
+
+.save:disabled {
+  opacity: 0.2;
+  box-shadow: none;
+}
