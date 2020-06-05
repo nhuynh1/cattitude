@@ -26,6 +26,10 @@ export default class New extends Component {
     this.setState({ note:  e.target.value })
   }
   
+  closeClick = () => {
+    route('/');
+  }
+  
   saveClick = () => {
     const { moodSelected, note } = this.state;
     const localVar = 'moods'
@@ -43,7 +47,8 @@ export default class New extends Component {
   render(props, state) {
     return (
       <div class={style.new}>
-        <h1>Hi [Name]</h1>
+        <button type="button" aria-label="close and return to homepage" onClick={ this.closeClick }>Close</button>
+        <h1>Hi { props.userName }</h1>
         <p>{this.today()}</p>
         <h2>How are you feeling?</h2>
         <p class={style.moodtext}>{state.moodSelected.mood}</p>
@@ -57,7 +62,7 @@ export default class New extends Component {
           />
         ))}
         </div>
-        <textarea class={style.note} placeholder="Note (optional)" onChange={this.handleChange}></textarea>
+        <textarea class={style.note} rows="3" placeholder="Note (optional)" onChange={this.handleChange}></textarea>
         <button type="button" class={style.save} onClick={this.saveClick} disabled={ state.moodSelected.mood ? false : true }>save</button>
       </div>
     )

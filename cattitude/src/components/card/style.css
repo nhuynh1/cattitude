@@ -1,0 +1,40 @@
+.card {
+  width: 100%;
+  border-radius: 3px;
+  border: solid 1px #E5E5E5;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-row-gap: 15px;
+  grid-column-gap: 20px;
+  grid-template-areas: 
+    "emoji date"
+    "emoji mood"
+    "note note";
+  grid-template-columns: auto 1fr;
+}
+
+.emoji {
+  grid-area: emoji;
+  font-size: 50px;
+  padding: 0.75rem 0 0 0.75rem;
+}
+
+.date {
+  grid-area: date;
+  font-size: 1.1rem;
+  padding: 1rem 0 0 0;
+}
+
+.mood {
+  grid-area: mood;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.note {
+  grid-area: note;
+  margin: 0;
+  padding: 0 0.75rem 0.75rem 0.75rem;
+}

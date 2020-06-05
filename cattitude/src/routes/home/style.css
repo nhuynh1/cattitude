@@ -3,3 +3,10 @@
 	min-height: 100%;
 	width: 100%;
 }
+
+.cardgrid {
+  margin: 1rem auto;
+  width: 90%;
+  display: grid;
+  grid-row-gap: 20px;
+}
