@@ -1,5 +1,5 @@
 import { Component } from 'preact';
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
 
 import Footer from './footer';
 
@@ -11,24 +11,31 @@ import Settings from '../routes/settings';
 
 // Set initial default moods, but also get settings from localstorage or user account (database)
 const moodItems = [
-  { mood: 'good', emoji: '🙂', src: 'slightly-smiling-face_1f642.png'}, 
-  { mood: 'great', emoji: '😃', src: ''},
-  { mood: 'neutral', emoji: '😐', src: ''},
-  { mood: 'anxious', emoji: '😬', src: ''},
-  { mood: 'worried', emoji: '😟', src:''},
-  { mood: 'sad', emoji: '😭', src: ''}
+  { mood: 'good', emoji: '🙂' }, 
+  { mood: 'great', emoji: '😃' },
+  { mood: 'neutral', emoji: '😐' },
+  { mood: 'anxious', emoji: '😬' },
+  { mood: 'worried', emoji: '😟' },
+  { mood: 'sad', emoji: '😭' }
 ];
 
 export default class App extends Component {
 	constructor() {
     super();
-    this.state = { settings: {} };
+    this.state = { 
+      settings: {
+        moodOptions: [ {mood: "", emoji: ""} ],
+        userName: ""
+      } };
   }
   
   componentDidMount() {
     let settings = JSON.parse(localStorage.getItem('settings'));
-    if(settings === null) return;
-    this.setState({ settings });
+    if(settings === null || !settings.settings.moodOptions) {
+      settings = { settings: {} };
+      settings.settings.moodOptions = [...moodItems];
+    }
+    this.setState({ settings: settings.settings });
   }
   
 	/** Gets fired when the route changes.
@@ -39,21 +46,61 @@ export default class App extends Component {
 		this.currentUrl = e.url;
 	};
 
-  getSetting = (settingName) => {
-    const { settings } = this.state;
-    if(Object.keys(settings) === 0 
-       && settings.contructor === Object) return;
-    return settings[settingName] || "";
+  handleChange = (e) => {
+    const { index, optionpref } = e.target.dataset;
+    const { value } = e.target;
+    const settings = { ...this.state.settings };
+    
+    // mood settings
+    if(["mood", "emoji"].includes(optionpref)) {
+      settings.moodOptions[index][optionpref] = value;
+    }
+    // other settings
+    else {
+      settings[optionpref] = value;
+    }
+    this.setState({settings: settings});
   }
-
+  
+  addMood = () => {
+    const settings = { ...this.state.settings };
+    const updatedMoodOptions = [...settings.moodOptions, {mood: "", emoji: ""}];
+    settings.moodOptions = updatedMoodOptions;
+    this.setState({ settings: settings });
+  }
+  
+  deleteMood = (e) => {
+    const { index } = e.target.dataset;
+    const settings = { ...this.state.settings };
+    const updatedMoodOptions = [...settings.moodOptions];
+    updatedMoodOptions.splice(index, 1);
+    settings.moodOptions = updatedMoodOptions;
+    this.setState({ settings: settings });
+  }
+  
+  saveSettings = (e) => {
+    e.preventDefault();
+    localStorage.setItem('settings', JSON.stringify(this.state));
+    route('/');
+  }
+  
 	render() {
-    console.log(this.getSetting("Name"));
+//    console.log(this.state);
+    const { settings } = this.state;
 		return (
 			<div id="app">
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
-          <New path="/new" moods={moodItems} userName={this.getSetting("Name")}/>
-          <Settings path="/settings" />
+					<New path="/new" 
+					    moods={ settings.moodOptions } 
+					    userName={ settings.userName } />
+				  <Settings path="/settings" 
+					    settings={ settings }
+					    moodOptions={ settings.moodOptions } 
+					    addMood={ this.addMood } 
+					    deleteMood={ this.deleteMood } 
+					    onChange={ this.handleChange }
+					    saveSettings={ this.saveSettings } />
 				</Router>
       <Footer />
 			</div>

@@ -9,23 +9,22 @@ import style from './style';
 export default class Home extends Component {
   constructor() {
     super();
-    this.state = { moods: JSON.parse(localStorage.getItem('moods')) }
+    this.state = { moods: [] }
   }
   
   componentDidMount() {
-//    setTimeout(() => {
-//     this.setState( { moods: [{mood: 'blah', emoji: '*', note: '...'}]})
-//    }, 2000)
-    
-//    this.setState( { moods: JSON.parse(localStorage.getItem('moods')) })
+    let moods = JSON.parse(localStorage.getItem('moods'));
+    if(moods === null) return;
+    this.setState( { moods: moods })
   }
-
+  
   render(props, state){
     const { moods } = state;
     return (
       <Fragment>
       <h1>Moods</h1>
       <Link activeClassName={style.active} href="/new">New</Link>
+      <Link activeClassName={style.active} href="/settings">Settings</Link>
       <div class={ style.cardgrid }>
       {moods.map((mood, index) => (
         <Card

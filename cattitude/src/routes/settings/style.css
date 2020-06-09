@@ -1,0 +1,28 @@
+.moodoptiongrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+  
+}
+
+.optioncard {
+  width: 90%;
+  margin: 0 auto 1.5rem auto;
+  padding: 1rem;
+  border: solid 1px var(--whitegrey);
+  border-radius: 3px;
+  background-color: white;
+}
+
+h2 {
+  color: var(--blue);
+}
+
+.option__text {
+  padding: 1rem;
+  border: solid 1px var(--whitegrey);
+  border-radius: 3px;
+  background-color: white;
+  display: block;
+  width: 100%;
+}
