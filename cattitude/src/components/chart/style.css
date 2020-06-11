@@ -1,0 +1,40 @@
+.chart {
+  width: 100%;
+  padding: 1rem 0;
+  border-radius: var(--corners);
+  border: solid 1px var(--whitegrey);
+  box-shadow: var(--shadow);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--blue);
+  height: 36px;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+  border-radius: var(--corners);
+  border: none;
+  color: white;
+}
+
+.chart-row {
+  width: 90%;
+  margin: 0 auto;
+  display: grid;
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 10px;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+}
+
+.emoji {
+  font-size: 30px;
+}
+
+.mood {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  margin: 0;
+  width: 70px;
+}

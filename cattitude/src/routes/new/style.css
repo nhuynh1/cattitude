@@ -33,10 +33,14 @@
   outline-color: var(--blue);
 }
 
-h2 {
+.new h2 {
   font-family: var(--secondFont, 'Arial');
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--black);
 }
 
+/*
 .save {
   width: 100%;
   padding: 1.5rem;
@@ -53,4 +57,4 @@ h2 {
 .save:disabled {
   opacity: 0.2;
   box-shadow: none;
-}
+}*/

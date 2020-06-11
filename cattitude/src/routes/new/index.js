@@ -1,8 +1,10 @@
 import { Component } from 'preact';
 import { route } from 'preact-router';
 
-import Mood from '../../components/mood';
+import db from '../../db';
 import style from './style';
+
+import Mood from '../../components/mood';
 
 
 export default class New extends Component {
@@ -11,8 +13,8 @@ export default class New extends Component {
     moodSelected: {},
     note: ''
   }
-  
-  getSelectStatus = mood => {
+    
+  isSelectedMood = mood => {
     return mood === this.state.moodSelected;
   }
   
@@ -30,24 +32,23 @@ export default class New extends Component {
     route('/');
   }
   
-  saveClick = () => {
+  saveClick = async () => {
     const { moodSelected, note } = this.state;
-    const localVar = 'moods'
-    let currentMood = { ...moodSelected, date: (new Date()).toString(), note };
-    let storedMoods = JSON.parse(localStorage.getItem(localVar)) || [];
-    let updatedMoods = [...currentMood, ...storedMoods];
-    localStorage.setItem(localVar, JSON.stringify(updatedMoods));
+    const currentMood = { ...moodSelected, dateTime: new Date(), note };
+    
+    await db.table('moods').add(currentMood);
     route('/');
   }
   
   moodClick = mood => (e) => {
-    this.setState({ moodSelected: mood });
+    this.setState({ moodSelected: mood, id: '' });
   }
   
   render(props, state) {
+//    console.log(this.state);
     return (
       <div class={style.new}>
-        <button type="button" aria-label="close and return to homepage" onClick={ this.closeClick }>Close</button>
+        <button type="button" class="close" aria-label="close and return to homepage" onClick={ this.closeClick }><span class="visuallyhidden">Close</span></button>
         <h1>Hi { props.userName }</h1>
         <p>{this.today()}</p>
         <h2>How are you feeling?</h2>
@@ -58,12 +59,12 @@ export default class New extends Component {
             moodName={ mood.mood }
             emoji={ mood.emoji }
             onClick={this.moodClick(mood)}
-            isSelected={this.getSelectStatus(mood)}
+            isSelected={this.isSelectedMood(mood)}
           />
         ))}
         </div>
         <textarea class={style.note} rows="3" placeholder="Note (optional)" onChange={this.handleChange}></textarea>
-        <button type="button" class={style.save} onClick={this.saveClick} disabled={ state.moodSelected.mood ? false : true }>save</button>
+        <button type="button" class="save" onClick={this.saveClick} disabled={ state.moodSelected.mood ? false : true }>save</button>
       </div>
     )
   }

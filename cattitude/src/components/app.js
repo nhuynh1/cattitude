@@ -1,12 +1,15 @@
 import { Component } from 'preact';
 import { Router, route } from 'preact-router';
 
+import db from '../db';
 import Footer from './footer';
+import StickyBackNav from './stickybacknav';
 
 // Code-splitting is automated for routes
 import Home from '../routes/home';
 import New from '../routes/new';
 import Settings from '../routes/settings';
+import Summary from '../routes/summary';
 
 
 // Set initial default moods, but also get settings from localstorage or user account (database)
@@ -29,13 +32,17 @@ export default class App extends Component {
       } };
   }
   
-  componentDidMount() {
-    let settings = JSON.parse(localStorage.getItem('settings'));
-    if(settings === null || !settings.settings.moodOptions) {
-      settings = { settings: {} };
-      settings.settings.moodOptions = [...moodItems];
+  async componentDidMount() {
+    const getSettings = async () => await db.table('settings').get(0);
+    let settings = await getSettings();
+    
+    if(!settings) {
+      await db.table('settings')
+              .put({id: 0, userName: '', moodOptions: moodItems});
+      settings = await getSettings();
     }
-    this.setState({ settings: settings.settings });
+    
+    this.setState(state => ({ settings }));
   }
   
 	/** Gets fired when the route changes.
@@ -78,15 +85,21 @@ export default class App extends Component {
     this.setState({ settings: settings });
   }
   
-  saveSettings = (e) => {
+  saveSettings = async (e) => {
     e.preventDefault();
-    localStorage.setItem('settings', JSON.stringify(this.state));
-    route('/');
+    const { settings } = this.state;
+    
+//    localStorage.setItem('settings', JSON.stringify(this.state));
+    
+    await db.table('settings').put(settings);
+    
+    //    route('/');
   }
   
 	render() {
 //    console.log(this.state);
     const { settings } = this.state;
+//    console.log(settings.moodOptions);
 		return (
 			<div id="app">
 				<Router onChange={this.handleRoute}>
@@ -101,6 +114,7 @@ export default class App extends Component {
 					    deleteMood={ this.deleteMood } 
 					    onChange={ this.handleChange }
 					    saveSettings={ this.saveSettings } />
+					 <Summary path="/summary/:week?" />
 				</Router>
       <Footer />
 			</div>

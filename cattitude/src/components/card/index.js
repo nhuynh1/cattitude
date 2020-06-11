@@ -3,10 +3,9 @@ import { Component } from 'preact';
 
 class Card extends Component {
   
-  formatDate = (dateString) => {
+  formatDate = (dateObj) => {
     const dateOptions = { weekday: 'long', month: 'short', day: 'numeric' };
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+    return new Intl.DateTimeFormat('en-US', dateOptions).format(dateObj);
   }
 
   
