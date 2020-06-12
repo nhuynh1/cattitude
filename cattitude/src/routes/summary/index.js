@@ -7,27 +7,8 @@ import style from './style';
 import StickyBackNav from '../../components/stickybacknav';
 import Chart from '../../components/chart';
 
-export default class Summary extends Component {
-  
-  constructor() {
-    super();
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 6);
-    
-    this.state = {
-      startDate: startDate,
-      endDate: new Date(),
-      chartData: []
-    }
-  }
-  
-  async componentDidMount() {
-    console.log('mounted summary')
-  }
-  
-      getData = async (startDate, endDate) => {
-//    const { startDate, endDate } = this.state;
-    
+
+const getData = async (startDate, endDate) => {    
     return await db.table('moods')
             .where("dateTime")
             .between(startDate, endDate, true, true)
@@ -43,23 +24,51 @@ export default class Summary extends Component {
               },[]);
             });
   }
+
+export default class Summary extends Component {
+  
+  constructor() {
+    super();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 6);
+    
+    this.state = {
+      startDate: startDate,
+      endDate: new Date(),
+      chartData: []
+    }
+  }
+  
+  componentDidMount() {
+    const { startDate, endDate } = this.state;
+    getData(startDate, endDate)
+              .then(chartData => {
+                this.setState({startDate: startDate, endDate: endDate, chartData: chartData})
+      });
+  }
   
   goBackOneWeek = () => {
-    
-    
-    this.setState(state => {
-      const { startDate, endDate } = state;
-      const weekInMillisecs = 7 * 24 * 60 * 60 * 1000;
-      const newStartDate = new Date(startDate.getTime() - weekInMillisecs);
-      const newEndDate = new Date(endDate.getTime() - weekInMillisecs);
-      
-//      this.getData(newStartDate, newEndDate)
-//            .then(chartData => {
-//        return { startDate: newStartDate, endDate: newEndDate, chartData: [] };
-//      })
-      
-      return { startDate: newStartDate, endDate: newEndDate, chartData: [] };
-    })
+    const { startDate, endDate } = this.state;
+    const weekInMillisecs = 7 * 24 * 60 * 60 * 1000;
+    const newStartDate = new Date(startDate.getTime() - weekInMillisecs);
+    const newEndDate = new Date(endDate.getTime() - weekInMillisecs);
+
+    getData(newStartDate, newEndDate)
+            .then(chartData => {
+              this.setState({startDate: newStartDate, endDate: newEndDate, chartData: chartData})
+    });
+  }
+  
+  goForwardOneWeek = () => {
+    const { startDate, endDate } = this.state;
+    const weekInMillisecs = 7 * 24 * 60 * 60 * 1000;
+    const newStartDate = new Date(startDate.getTime() + weekInMillisecs);
+    const newEndDate = new Date(endDate.getTime() + weekInMillisecs);
+
+    getData(newStartDate, newEndDate)
+            .then(chartData => {
+              this.setState({startDate: newStartDate, endDate: newEndDate, chartData: chartData})
+    });
   }
   
 
@@ -67,13 +76,13 @@ export default class Summary extends Component {
   render(props, state) {
     const { week, month, year }  = props;
     const { startDate, endDate, chartData } = state;
-    console.log({ startDate, endDate, chartData })
     return (
       <div class={ style.summary }>
        <StickyBackNav />
         <div>
           <h1>Summary</h1>
           <button type="button" onClick={ this.goBackOneWeek }>gobackoneweek</button>
+          <button type="button" onClick={ this.goForwardOneWeek }>goforwardoneweek</button>
           <Chart chartData={ chartData } startDate={ startDate } endDate={ endDate }/>
         </div>
       </div>

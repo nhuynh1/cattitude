@@ -24,31 +24,6 @@ class Chart extends Component {
     }
   }
   
-  getData = async () => {
-    const { startDate, endDate } = this.props;
-    
-    return await db.table('moods')
-            .where("dateTime")
-            .between(startDate, endDate, true, true)
-            .toArray(moodArr => {
-              return moodArr.reduce((chartData, mood) => {
-                let foundIndex = chartData.findIndex(rowData => rowData.mood === mood.mood);
-                if(foundIndex === -1){
-                  chartData.push({emoji: mood.emoji, mood: mood.mood, count: 1});
-                } else {
-                  chartData[foundIndex].count++;
-                }
-                return chartData;
-              },[]);
-            });
-  }
-  
-//  async componentDidMount() {
-//    const chartData = await this.getData();
-//    this.setState(state => ({ chartData }));
-//    console.log('mount');
-//  }
-  
   maxCount = chartData => {
     return Math.max(...chartData.map(rowData => rowData.count));
   }
@@ -59,10 +34,7 @@ class Chart extends Component {
   }
   
   render (props, state) {
-//    const { startDate, endDate } = props;
-    const { chartData, startDate, endDate } = props;
-    console.log(chartData);
-//    const { chartData } = state;    
+    const { chartData, startDate, endDate } = props;    
     const maxCount = this.maxCount(chartData);
     
     return (

@@ -87,19 +87,13 @@ export default class App extends Component {
   
   saveSettings = async (e) => {
     e.preventDefault();
-    const { settings } = this.state;
-    
-//    localStorage.setItem('settings', JSON.stringify(this.state));
-    
+    const { settings } = this.state;    
     await db.table('settings').put(settings);
-    
-    //    route('/');
+    route('/');
   }
   
-	render() {
-//    console.log(this.state);
-    const { settings } = this.state;
-//    console.log(settings.moodOptions);
+	render(props, state) {
+    const { settings } = state;
 		return (
 			<div id="app">
 				<Router onChange={this.handleRoute}>

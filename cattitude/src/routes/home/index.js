@@ -29,11 +29,12 @@ export default class Home extends Component {
         <h1>Moods</h1>
         <Link activeClassName={style.active} href="/new">New</Link>
         <Link activeClassName={style.active} href="/settings">Settings</Link>
+        <Link activeClassName={style.active} href="/summary">Summary</Link>
         <div class={ style.cardgrid }>
         {moods.map((mood, index) => (
           <Card
             emoji={ mood.emoji }
-            date={ mood.date }
+            date={ mood.dateTime }
             mood= { mood.mood }
             note= {mood.note }
           />
