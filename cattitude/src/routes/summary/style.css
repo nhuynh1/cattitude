@@ -4,3 +4,23 @@
 	min-height: 100%;
 	width: 100%;
 }
+
+.range-option {
+  color: var(--black);
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.active {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--blue);
+}
+

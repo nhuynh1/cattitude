@@ -108,7 +108,7 @@ export default class App extends Component {
 					    deleteMood={ this.deleteMood } 
 					    onChange={ this.handleChange }
 					    saveSettings={ this.saveSettings } />
-					 <Summary path="/summary/:week?" />
+					 <Summary path="/summary/:chart?" />
 				</Router>
       <Footer />
 			</div>

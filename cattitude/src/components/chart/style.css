@@ -22,10 +22,8 @@
   width: 90%;
   margin: 0 auto;
   display: grid;
-  grid-row-gap: 0.5rem;
   grid-column-gap: 10px;
   grid-template-columns: auto auto 1fr;
-  align-items: center;
 }
 
 .emoji {
@@ -37,4 +35,7 @@
   text-transform: uppercase;
   margin: 0;
   width: 70px;
+  border-right: solid 1px var(--whitegrey);
+  display: flex;
+  align-items: center;
 }

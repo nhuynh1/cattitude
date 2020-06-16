@@ -23,23 +23,21 @@ class Chart extends Component {
       chartData: []
     }
   }
+    
+  componentDidUpdate (prevProps) {
+    console.log({prevProps, props: this.props});
+  }
   
   maxCount = chartData => {
     return Math.max(...chartData.map(rowData => rowData.count));
   }
-  
-  formatDate = dateObj => {
-    const dateOptions = { month: 'short', day: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', dateOptions).format(dateObj);
-  }
-  
+    
   render (props, state) {
     const { chartData, startDate, endDate } = props;    
     const maxCount = this.maxCount(chartData);
     
     return (
       <Fragment>
-       <h2>{ `${this.formatDate(startDate)} - ${this.formatDate(endDate)}` }</h2>
         <div class={ style.chart }>
           { chartData.map((entry) => (
             <Bar width={ `${entry.count / maxCount * 100}%` } emoji={ entry.emoji } count={ entry.count } mood={ entry.mood } />
