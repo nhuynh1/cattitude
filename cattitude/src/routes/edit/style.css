@@ -1,0 +1,41 @@
+.edit {
+  --corners: 3px;
+	padding: 56px 20px;
+	min-height: 100%;
+	width: 100%;
+}
+
+.edit > * {
+  margin: 1rem 0;
+}
+
+.moodsgrid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, 64px);
+}
+
+.moodtext {
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: bold;
+}
+
+.note {
+  display: block;
+  width: 100%;
+  font-size: 1.5rem;
+  border: solid 1px var(--lightgrey);
+  border-radius: var(--corners);
+}
+
+.note:focus {
+  outline-color: var(--blue);
+}
+
+.actions {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+}

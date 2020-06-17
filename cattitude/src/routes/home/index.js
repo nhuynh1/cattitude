@@ -1,11 +1,12 @@
 import { Component } from 'preact';
-import { route } from 'preact-router';
+import { Router, route } from 'preact-router';
 import { Link } from 'preact-router/match';
 
 import db from '../../db';
 import style from './style';
 
 import Card from '../../components/card';
+import Edit from '../edit';
 
 export default class Home extends Component {
   constructor() {
@@ -20,6 +21,18 @@ export default class Home extends Component {
       .then(moods => {
         this.setState(state => ({ moods: moods }))
     });
+    console.log('homepage mounted');
+  }
+  
+  deleteMood = (moodID) => () => { 
+    db.table("moods")
+      .delete(moodID)
+      .then(result => {
+          this.setState(prevState => {
+            let updatedMoods = prevState.moods.filter(mood => mood.id !== moodID);
+            return { moods: updatedMoods };
+        });
+      })
   }
   
   render(props, state){
@@ -27,16 +40,15 @@ export default class Home extends Component {
     return (
       <div class={ style.home }>
         <h1>Moods</h1>
-        <Link activeClassName={style.active} href="/new">New</Link>
-        <Link activeClassName={style.active} href="/settings">Settings</Link>
-        <Link activeClassName={style.active} href="/summary/weekly">Summary</Link>
         <div class={ style.cardgrid }>
         {moods.map((mood, index) => (
           <Card
             emoji={ mood.emoji }
             date={ mood.dateTime }
-            mood= { mood.mood }
-            note= {mood.note }
+            mood={ mood.mood }
+            note={ mood.note }
+            id={ mood.id }
+            deleteMood={ this.deleteMood(mood.id) }
           />
          ))}
         </div>

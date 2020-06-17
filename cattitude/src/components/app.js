@@ -3,13 +3,15 @@ import { Router, route } from 'preact-router';
 
 import db from '../db';
 import Footer from './footer';
-import StickyBackNav from './stickybacknav';
+import BottomNav from './bottom-nav';
 
 // Code-splitting is automated for routes
 import Home from '../routes/home';
 import New from '../routes/new';
+import Edit from '../routes/edit';
 import Settings from '../routes/settings';
 import Summary from '../routes/summary';
+import FourOhFour from '../routes/fourohfour';
 
 
 // Set initial default moods, but also get settings from localstorage or user account (database)
@@ -77,7 +79,7 @@ export default class App extends Component {
   }
   
   deleteMood = (e) => {
-    const { index } = e.target.dataset;
+    const { index } = e.currentTarget.dataset;
     const settings = { ...this.state.settings };
     const updatedMoodOptions = [...settings.moodOptions];
     updatedMoodOptions.splice(index, 1);
@@ -101,6 +103,8 @@ export default class App extends Component {
 					<New path="/new" 
 					    moods={ settings.moodOptions } 
 					    userName={ settings.userName } />
+          <Edit path="/edit/:moodID" 
+              moods={ settings.moodOptions } />
 				  <Settings path="/settings" 
 					    settings={ settings }
 					    moodOptions={ settings.moodOptions } 
@@ -109,7 +113,9 @@ export default class App extends Component {
 					    onChange={ this.handleChange }
 					    saveSettings={ this.saveSettings } />
 					 <Summary path="/summary/:chart?" />
+           <FourOhFour default />
 				</Router>
+      <BottomNav />
       <Footer />
 			</div>
 		);

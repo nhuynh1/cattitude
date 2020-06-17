@@ -41,7 +41,8 @@ export default class New extends Component {
   }
   
   moodClick = mood => (e) => {
-    this.setState({ moodSelected: mood, id: '' });
+    this.setState({ moodSelected: mood });
+    console.log(mood);
   }
   
   render(props, state) {

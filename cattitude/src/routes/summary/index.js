@@ -5,9 +5,20 @@ import { Link, Match } from 'preact-router/match';
 import db from '../../db';
 import style from './style';
 
-import StickyBackNav from '../../components/stickybacknav';
 import Chart from '../../components/chart';
 
+
+/* SVG ICONS
+**
+*/
+
+const BackIcon = (props) => (
+  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill={ props.fill }/></svg>
+)
+
+const ForwardIcon = (props) => (
+  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z" fill={ props.fill }/></svg>
+)
 
 const getData = async (startDate, endDate) => {    
   return await db.table('moods')
@@ -75,8 +86,7 @@ export default class Summary extends Component {
     
   }
   
-  formatDate = dateObj => {
-    const dateOptions = { month: 'short', day: 'numeric' };
+  formatDate = (dateObj = new Date(), dateOptions = { month: 'short', day: 'numeric' }) => {
     return new Intl.DateTimeFormat('en-US', dateOptions).format(dateObj);
   }
   
@@ -118,27 +128,66 @@ export default class Summary extends Component {
   }
 
   renderDateHeading = (startDate, endDate, chart) => {
-    let formattedEndDate = startDate.getMonth() === endDate.getMonth() ? 
-                            endDate.getDate() : this.formatDate(endDate);
+    let formatDate;
+    
+    switch(chart){
+      case 'weekly':
+      default:
+        let formatEndDate, formatStartDate;
+        if(startDate.getMonth() === endDate.getMonth()){
+          formatStartDate = this.formatDate(startDate);
+          formatEndDate = `${endDate.getDate()}, ${endDate.getFullYear()}`;
+          formatDate = `${formatStartDate} - ${formatEndDate}`;
+        }
+        else if(startDate.getYear() !== endDate.getYear()){
+          formatStartDate = this.formatDate(startDate, 
+                                            {month: 'short', day: 'numeric', year: 'numeric'})
+          formatEndDate = this.formatDate(endDate, 
+                                          {month: 'short', day: 'numeric', year: 'numeric'});
+          formatDate = `${formatStartDate} - ${formatEndDate}`;
+        }
+        else {
+          formatStartDate = this.formatDate(startDate);
+          formatEndDate = `${this.formatDate(endDate)}, ${endDate.getFullYear()}`;
+          formatDate = `${formatStartDate} - ${formatEndDate}`;
+        }
+        break;
+      case 'monthly':
+        formatDate = this.formatDate(startDate, 
+                                     { month: 'short', year: 'numeric' });
+        break;
+      case 'yearly':
+        formatDate = this.formatDate(startDate, { year: 'numeric' });
+        break;
+    }
+    
     return (
-      <div style="display:grid;grid-template-columns:auto 1fr auto;align-items: center">
-       <button type="button" onClick={ this.goOne(chart, 'back') }>back</button>
-        <h2 style="text-align:center">{ `${this.formatDate(startDate)} - ${formattedEndDate}` }</h2>
-        <button type="button" onClick={ this.goOne(chart, 'forward') }>foward</button>
+      <div class={ style['date-heading-area'] }>
+       <button type="button" 
+               onClick={ this.goOne(chart, 'back') }
+               class={ style['date-back-forward'] }
+               aria-label={ `go back one ${chart.slice(0, -2)}` } >
+               <BackIcon fill="#5B5B64" />
+        </button>
+        <h2 class={ style['date-heading'] }>
+          { formatDate }
+        </h2>
+        <button type="button" 
+                onClick={ this.goOne(chart, 'forward') }
+                class={ style['date-back-forward'] }
+                aria-label={ `go forward one ${chart.slice(0, -2)}` } >
+                <ForwardIcon fill="#5B5B64" />
+        </button>
       </div>
     )
   }
   
   render(props, state) {
-//    console.log('render');
     const { chart }  = props;
-//    console.log(chart);
     const { startDate, endDate, chartData } = state;
-//    console.log(chartData);
     return (
       <div class={ style.summary }>
-       <StickyBackNav />
-      <Router onChange={this.handleRoute} />
+      <Router onChange={ this.handleRoute } />
        
         <div>
           <h1>Summary</h1>

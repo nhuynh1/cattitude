@@ -28,6 +28,11 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+textarea {
+  font-family: var(--firstFont);
+  color: var(--black);
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -74,4 +79,31 @@ h1, h2, h3, h4, h5, h6 {
   background-position: center;
   height: 48px;
   width: 48px;
+}
+
+.button {
+  background-color: #F3F3F3;
+  border: solid 1px #F3F3F3;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  color: #434343;
+  font-size: 1rem;
+  font-family: var(--firstFont);
+  font-weight: 400;
+}
+
+.button-type-cancel {
+  font-weight: 600;
+}
+
+.button-type-action {
+  background-color: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+
+.button-type-danger {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: white;
 }
