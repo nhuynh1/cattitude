@@ -1,0 +1,19 @@
+.footer {
+  margin-bottom: 3.5rem;
+  text-align:center;
+}
+
+.footer__brand {
+  font-weight:bold; 
+  display: block;
+}
+
+.footer__tagline {
+  font-size: 0.75rem; 
+  display: block; 
+}
+
+.footer__copyright {
+  font-size: 0.75rem; 
+  display: block;
+}

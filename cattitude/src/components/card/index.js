@@ -1,4 +1,4 @@
-import { Component } from 'preact';
+import { Component, createRef } from 'preact';
 import { route } from 'preact-router';
 
 import style from './style.css';
@@ -10,10 +10,6 @@ const OptionsIcon = (props) => (
   <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill={ props.fill }/></svg>
 )
 
-
-const Outside = (props) => (
-      <div class="outside">{ props.children }</div>
-    )
 
 const DeleteDialog = (props) => {
   const { deleteMood, toggleDeleteDialog } = props;
@@ -27,6 +23,26 @@ const DeleteDialog = (props) => {
     </div>
   )
 }
+
+class Outside extends Component {
+
+  clickOutside = (e) => {
+    this.props.handleClickOutside(e, this.wrapperRef);
+  }
+  
+  componentDidMount() {
+    document.addEventListener('mousedown', this.clickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.clickOutside);
+  }
+  
+  render(props) {
+    return (<div ref={ node => this.wrapperRef = node }>{ props.children }</div>)
+  }
+}
+
 
 class OptionsMenu extends Component {
   
@@ -69,6 +85,12 @@ class OptionsButton extends Component {
     menuIsOpen: false  
   }
   
+  handleClickOutside = (e, wrapper) => {
+    if (wrapper && !wrapper.contains(e.target)) {
+      this.setState({menuIsOpen: false});
+    }
+  }
+  
   openMenu = () => {
     this.setState(prevState => {
       return { menuIsOpen: !prevState.menuIsOpen }
@@ -79,14 +101,22 @@ class OptionsButton extends Component {
     const { menuIsOpen } = state;
     const { moodID, deleteMood } = props;
     return (
-      <div class={ style.options }>
-        <button type="button" 
-                class={ style['options-button'] } 
-                onClick={ this.openMenu }>
-                <OptionsIcon fill="#5B5B64" />
-        </button>
-        { menuIsOpen && <Outside><OptionsMenu moodID={ moodID } deleteMood={ deleteMood } /></Outside> }
-      </div>
+        <div class={ style.options }>
+        { !menuIsOpen && <button type="button" 
+                  class={ style['options-button'] } 
+                  onClick={ this.openMenu }>
+                  <OptionsIcon fill="#5B5B64" />
+          </button> }
+          { menuIsOpen && 
+                <Outside handleClickOutside={ this.handleClickOutside}>
+                   <button type="button" 
+                      class={ style['options-button'] } 
+                      onClick={ this.openMenu }>
+                      <OptionsIcon fill="#5B5B64" />
+                   </button>
+                   <OptionsMenu moodID={ moodID } deleteMood={ deleteMood } />
+                </Outside> }
+        </div>
     );
   }
 }

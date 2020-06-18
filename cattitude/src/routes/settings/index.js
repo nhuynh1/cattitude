@@ -13,7 +13,6 @@ export default class Settings extends Component {
     const { moodOptions, settings, addMood, deleteMood, onChange, saveSettings } = props;
     return (
       <Fragment>
-        <StickyBackNav />
         <div class={ style.settings }>
           <form onSubmit={ saveSettings }>
             <h1>Settings</h1>

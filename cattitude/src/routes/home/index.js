@@ -6,7 +6,6 @@ import db from '../../db';
 import style from './style';
 
 import Card from '../../components/card';
-import Edit from '../edit';
 
 export default class Home extends Component {
   constructor() {
@@ -21,7 +20,6 @@ export default class Home extends Component {
       .then(moods => {
         this.setState(state => ({ moods: moods }))
     });
-    console.log('homepage mounted');
   }
   
   deleteMood = (moodID) => () => { 

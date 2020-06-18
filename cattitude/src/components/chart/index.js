@@ -25,7 +25,7 @@ class Chart extends Component {
   }
     
   componentDidUpdate (prevProps) {
-    console.log({prevProps, props: this.props});
+    // TO-DO: get data during this lifecycle stage
   }
   
   maxCount = chartData => {
