@@ -5,7 +5,8 @@ import db from '../../db';
 import style from './style';
 
 import Moodoption from '../../components/moodoption';
-import StickyBackNav from '../../components/stickybacknav';
+import Footer from '../../components/footer';
+import BottomNav from '../../components/bottom-nav';
 
 export default class Settings extends Component {
   
@@ -58,6 +59,8 @@ export default class Settings extends Component {
             <button class="save" type="submit">Save</button>
           </form>
         </div>
+        <Footer />
+        <BottomNav />        
       </Fragment>
     )
   }

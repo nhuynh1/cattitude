@@ -100,23 +100,21 @@ export default class App extends Component {
 			<div id="app">
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
-					<New path="/new" 
+          <New path="/new" 
 					    moods={ settings.moodOptions } 
 					    userName={ settings.userName } />
           <Edit path="/edit/:moodID" 
               moods={ settings.moodOptions } />
-				  <Settings path="/settings" 
+          <Settings path="/settings" 
 					    settings={ settings }
 					    moodOptions={ settings.moodOptions } 
 					    addMood={ this.addMood } 
 					    deleteMood={ this.deleteMood } 
 					    onChange={ this.handleChange }
 					    saveSettings={ this.saveSettings } />
-					 <Summary path="/summary/:chart?" />
-           <FourOhFour default />
+          <Summary path="/summary/:chart?" />
+          <FourOhFour default />
 				</Router>
-      <BottomNav />
-      <Footer />
 			</div>
 		);
 	}

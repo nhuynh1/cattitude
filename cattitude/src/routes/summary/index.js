@@ -6,7 +6,8 @@ import db from '../../db';
 import style from './style';
 
 import Chart from '../../components/chart';
-
+import Footer from '../../components/footer';
+import BottomNav from '../../components/bottom-nav';
 
 /* SVG ICONS
 **
@@ -186,22 +187,26 @@ export default class Summary extends Component {
     const { chart }  = props;
     const { startDate, endDate, chartData } = state;
     return (
-      <div class={ style.summary }>
-      <Router onChange={ this.handleRoute } />
-       
-        <div>
-          <h1>Summary</h1>
-          <div style="display:flex">
-            <Link activeClassName={style.active} class={style['range-option']} href="/summary/weekly">Weekly</Link>
-            <Link activeClassName={style.active} class={style['range-option']} href="/summary/monthly">Monthly</Link>
-            <Link activeClassName={style.active} class={style['range-option']} href="/summary/yearly">Yearly</Link>
+      <Fragment>
+        <div class={ style.summary }>
+        <Router onChange={ this.handleRoute } />
+
+          <div>
+            <h1>Summary</h1>
+            <div style="display:flex">
+              <Link activeClassName={style.active} class={style['range-option']} href="/summary/weekly">Weekly</Link>
+              <Link activeClassName={style.active} class={style['range-option']} href="/summary/monthly">Monthly</Link>
+              <Link activeClassName={style.active} class={style['range-option']} href="/summary/yearly">Yearly</Link>
+            </div>
+            {this.renderDateHeading(startDate, endDate, chart)}
+
+
+            <Chart chartData={ chartData } startDate={ startDate } endDate={ endDate } chart={ chart }/>
           </div>
-          {this.renderDateHeading(startDate, endDate, chart)}
-          
-          
-          <Chart chartData={ chartData } startDate={ startDate } endDate={ endDate } chart={ chart }/>
         </div>
-      </div>
+        <Footer />
+        <BottomNav />        
+      </Fragment>
     )
   }
 }

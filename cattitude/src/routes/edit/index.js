@@ -5,6 +5,8 @@ import db from '../../db';
 import style from './style';
 
 import Mood from '../../components/mood';
+import Footer from '../../components/footer';
+import BottomNav from '../../components/bottom-nav';
 
 export default class Edit extends Component {
   
@@ -81,28 +83,32 @@ export default class Edit extends Component {
   render(props, state) {
     const { moodID, moods:moodOptions } = props;
     return (
-      <div class={style.edit}>
-        <h1>Editing Mood</h1>
-        <p>{this.formatDate(state.dateTime, {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' })}, your mood was</p>
-        <p class={style.moodtext}>{ state.moodSelected.mood }</p>
-        <div class={style.moodsgrid}>
-          { moodOptions.map(moodOption => (
-              <Mood 
-                moodName={ moodOption.mood }
-                emoji={ moodOption.emoji }
-                onClick={ this.moodClick(moodOption) }
-                isSelected={ this.isSelectedMood(moodOption) }
-              />
-          )) }
+      <Fragment>
+        <div class={style.edit}>
+          <h1>Editing Mood</h1>
+          <p>{this.formatDate(state.dateTime, {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' })}, your mood was</p>
+          <p class={style.moodtext}>{ state.moodSelected.mood }</p>
+          <div class={style.moodsgrid}>
+            { moodOptions.map(moodOption => (
+                <Mood 
+                  moodName={ moodOption.mood }
+                  emoji={ moodOption.emoji }
+                  onClick={ this.moodClick(moodOption) }
+                  isSelected={ this.isSelectedMood(moodOption) }
+                />
+            )) }
+          </div>
+          <textarea class={style.note} rows="3" placeholder="Note (optional)" onChange={ this.handleChange }>
+            { state.note }
+          </textarea>
+          <div class={style.actions}> 
+            <button type="button" class="button button-type-cancel" onClick={ this.handleCancel }>Cancel</button>
+            <button type="button" class="button button-type-action" onClick={ this.handleSaveEdits(moodID) }>Save Edits</button>
+          </div>
         </div>
-        <textarea class={style.note} rows="3" placeholder="Note (optional)" onChange={ this.handleChange }>
-          { state.note }
-        </textarea>
-        <div class={style.actions}> 
-          <button type="button" class="button button-type-cancel" onClick={ this.handleCancel }>Cancel</button>
-          <button type="button" class="button button-type-action" onClick={ this.handleSaveEdits(moodID) }>Save Edits</button>
-        </div>
-      </div>
+        <Footer />
+        <BottomNav />
+      </Fragment>
     )
   }
 }

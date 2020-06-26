@@ -6,6 +6,8 @@ import db from '../../db';
 import style from './style';
 
 import Card from '../../components/card';
+import Footer from '../../components/footer';
+import BottomNav from '../../components/bottom-nav';
 
 export default class Home extends Component {
   constructor() {
@@ -36,21 +38,25 @@ export default class Home extends Component {
   render(props, state){
     const { moods } = state;
     return (
-      <div class={ style.home }>
-        <h1>Moods</h1>
-        <div class={ style.cardgrid }>
-        {moods.map((mood, index) => (
-          <Card
-            emoji={ mood.emoji }
-            date={ mood.dateTime }
-            mood={ mood.mood }
-            note={ mood.note }
-            id={ mood.id }
-            deleteMood={ this.deleteMood(mood.id) }
-          />
-         ))}
+      <Fragment>
+        <div class={ style.home }>
+          <h1>Moods</h1>
+          <div class={ style.cardgrid }>
+          {moods.map((mood, index) => (
+            <Card
+              emoji={ mood.emoji }
+              date={ mood.dateTime }
+              mood={ mood.mood }
+              note={ mood.note }
+              id={ mood.id }
+              deleteMood={ this.deleteMood(mood.id) }
+            />
+           ))}
+          </div>
         </div>
-      </div>
+        <Footer />
+        <BottomNav />
+      </Fragment>
     )
   }
 }
